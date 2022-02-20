@@ -6,6 +6,7 @@ public class GamePlayController
 {
     PlayerController _player;
     System.Action _onEnd;
+    PlayUI _playUI;
 
     public GamePlayController(System.Action onEnd)
     {
@@ -16,16 +17,21 @@ public class GamePlayController
 
     void BasicSetup()
     {
-        var playUI = GameFlow.Instance.ShowUI<PlayUI>("PlayUI");
+        _playUI = GameFlow.Instance.ShowUI<PlayUI>("PlayUI");
 
         _player = Object.Instantiate(Resources.Load<GameObject>("PlayerPrefab")).GetComponent<PlayerController>();
-        _player.SetPlayerJoystick(playUI.GetJoystick());
-        playUI.OnJump = () =>
-        {
-            _player.GetComponent<Jump>().StartJump();
-        };
+        _player.SetPlayerJoystick(_playUI.GetJoystick());
 
-        playUI.SubscribeRotate((mousePos) =>
+        MatchPlayerControl();
+    }
+
+    void MatchPlayerControl()
+    {
+        _playUI.OnJump = _player.GetComponent<Jump>().StartJump;
+        _playUI.OnChangeGun = _player.ChangeGun;
+        _playUI.OnFire = _player.Fire;
+
+        _playUI.SubscribeRotate((mousePos) =>
         {
             _player.RotateH(mousePos);
             _player.RotateV(mousePos);

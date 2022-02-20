@@ -9,6 +9,8 @@ public class PlayUI : UIController
     [SerializeField] Joystick _joyStick;
     [SerializeField] RotationTouchpad _rotate;
     public System.Action OnJump;
+    public System.Action OnChangeGun;
+    public System.Action OnFire;
 
     public void SubscribeRotate(System.Action<Vector2> onRotate)
     {
@@ -23,5 +25,15 @@ public class PlayUI : UIController
     public void ClickJump()
     {
         OnJump?.Invoke();
+    }
+
+    public void ChangeGun()
+    {
+        OnChangeGun?.Invoke();
+    }
+
+    public void Fire()
+    {
+        OnFire?.Invoke();
     }
 }

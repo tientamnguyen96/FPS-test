@@ -4,25 +4,49 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public enum GunType
+{
+    None = 0,
+    Rifle = 1,
+    HandGun = 2
+}
+
+public class PlayerController : MonoBehaviour, IAnimHandleLogic
 {
     [SerializeField] Transform _rotatableH;
     [SerializeField] Transform _rotatableV;
+    [SerializeField] Transform _rifleArm;
+    [SerializeField] Transform _handGunArm;
+
     public float RotationSpeed = .1f;
     public float speed;
     private Rigidbody _rb;
     Joystick _joystick;
+    GunType _currentGun = GunType.HandGun;
+    Animator _currentAnimator;
+    Transform _currentArm;
+    AnimationHandler _animHandler;
     bool _checkMove = false;
 
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _currentGun = GunType.HandGun;
+        _rotatableV = _handGunArm;
+        _currentArm = _handGunArm;
+        _currentAnimator = _currentArm.GetComponent<Animator>();
+        _animHandler = new AnimationHandler(this);
     }
 
     public void SetPlayerJoystick(Joystick joyStick)
     {
         _joystick = joyStick;
         _checkMove = true;
+    }
+
+    public void PlayCoroutine(IEnumerator routine)
+    {
+        StartCoroutine(routine);
     }
 
     void FixedUpdate()
@@ -57,5 +81,33 @@ public class PlayerController : MonoBehaviour
 
         }
         _rotatableV.transform.localEulerAngles = new Vector3(limitedXRot, _rotatableV.transform.localEulerAngles.y, _rotatableV.transform.localEulerAngles.z);
+    }
+
+    public void Fire()
+    {
+        _animHandler.Fire(_currentArm);
+    }
+
+    public void ChangeGun()
+    {
+        var previousArm = _currentArm;
+
+        switch (_currentGun)
+        {
+            case GunType.HandGun:
+                _currentGun = GunType.Rifle;
+                _rotatableV = _rifleArm;
+                _currentArm = _rifleArm;
+
+                break;
+            case GunType.Rifle:
+                _currentGun = GunType.HandGun;
+                _rotatableV = _handGunArm;
+                _currentArm = _handGunArm;
+                break;
+        }
+
+        _animHandler.ChangeGun(previousArm, _currentArm);
+        _currentAnimator = _currentArm.GetComponent<Animator>();
     }
 }
