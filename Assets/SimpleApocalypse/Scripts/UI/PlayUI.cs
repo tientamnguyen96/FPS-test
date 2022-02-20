@@ -11,6 +11,7 @@ public class PlayUI : UIController
     public System.Action OnJump;
     public System.Action OnChangeGun;
     public System.Action OnFire;
+    public System.Action OnFinishFire;
 
     public void SubscribeRotate(System.Action<Vector2> onRotate)
     {
@@ -35,5 +36,10 @@ public class PlayUI : UIController
     public void Fire()
     {
         OnFire?.Invoke();
+    }
+
+    public void FinishFire()
+    {
+        OnFinishFire?.Invoke();
     }
 }

@@ -7,6 +7,7 @@ public class GamePlayController
     PlayerController _player;
     System.Action _onEnd;
     PlayUI _playUI;
+    EnemyFactory _enemyFactory;
 
     public GamePlayController(System.Action onEnd)
     {
@@ -21,6 +22,8 @@ public class GamePlayController
 
         _player = Object.Instantiate(Resources.Load<GameObject>("PlayerPrefab")).GetComponent<PlayerController>();
         _player.SetPlayerJoystick(_playUI.GetJoystick());
+
+        _enemyFactory = new GameObject("EnemyFactory", typeof(EnemyFactory)).GetComponent<EnemyFactory>();
 
         MatchPlayerControl();
     }
