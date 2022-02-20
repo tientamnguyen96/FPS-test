@@ -40,7 +40,7 @@ public partial class GameFlow : MonoBehaviour
 
     IEnumerator Start()
     {
-        _gsMachine.Init(OnStateChanged, GameState.Init);
+        _gsMachine.Init(OnStateChanged, GameState.MainMenu);
 
         while (true)
         {
@@ -88,13 +88,13 @@ public partial class GameFlow : MonoBehaviour
         switch (state)
         {
             case GameState.Init:
-                return GameInit;
+                return null;
 
             case GameState.MainMenu:
-                return null;
+                return GameMainMenu;
 
             case GameState.Play:
-                return null;
+                return GamePlay;
 
         }
 

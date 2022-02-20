@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/SimpleApocalypse/Scene/bootstrap.unity
+    guid: a060664efbf3c43b69410ca22aec5992
+  - enabled: 1
+    path: Assets/SimpleApocalypse/Scene/SA.unity
+    guid: 04369fb899db60f48a62f06cb460ce80
   m_configObjects: {}
